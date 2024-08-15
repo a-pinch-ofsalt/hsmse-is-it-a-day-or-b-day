@@ -18,7 +18,7 @@ function getDayOfWeek(dateStr) {
 // Function to find the next five A or B days from today
 function findNextFiveDays() {
     const relevantDays = [];
-    const today = new Date('2024-09-05');
+    const today = new Date('2024-09-24');
     today.setUTCHours(0, 0, 0, 0); // Reset time to midnight in UTC
     const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
     
@@ -57,3 +57,4 @@ console.log('Next 5 A or B Days:');
 nextFiveDays.forEach(day => {
     console.log(`${day.date} (${day.dayOfWeek}): ${day.type}`);
 });
+
