@@ -31,5 +31,7 @@ jobs:
 
     - name: Commit and push changes if any
       run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
         git diff-index --quiet HEAD || git commit -m "Update JSON file"
         git push origin main
