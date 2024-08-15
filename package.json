@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/a-pinch-ofsalt/hsmse-is-it-a-day-or-b-day/issues"
   },
-  "homepage": "https://github.com/a-pinch-ofsalt/hsmse-is-it-a-day-or-b-day#readme"
+  "homepage": "https://github.com/a-pinch-ofsalt/hsmse-is-it-a-day-or-b-day#readme",
+  "dependencies": {
+    "ics": "^3.7.6"
+  }
 }
