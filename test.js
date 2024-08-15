@@ -11,26 +11,30 @@ const events = ical.parseICS(icsFileContent);
 // Function to get the day of the week for a given date
 function getDayOfWeek(dateStr) {
     const date = new Date(dateStr);
-    const options = { weekday: 'long' };
+    const options = { weekday: 'long', timeZone: 'UTC' };
     return new Intl.DateTimeFormat('en-US', options).format(date);
 }
 
 // Function to find the next five A or B days from today
 function findNextFiveDays() {
     const relevantDays = [];
-    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    const today = new Date('2024-09-05');
+    today.setUTCHours(0, 0, 0, 0); // Reset time to midnight in UTC
+    const todayStr = today.toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
     
     // Iterate through all events
     for (const eventKey in events) {
         const event = events[eventKey];
         if (event.start) {
-            const eventDate = event.start.toISOString().split('T')[0];
+            const eventDate = new Date(event.start);
+            eventDate.setUTCHours(0, 0, 0, 0); // Reset time to midnight in UTC
+            const eventDateStr = eventDate.toISOString().split('T')[0];
             
             // Check if the event is in the future and is an A Day or B Day
-            if (eventDate >= today && (event.summary.includes('A Day') || event.summary.includes('B Day'))) {
+            if (eventDateStr >= todayStr && (event.summary.includes('A Day') || event.summary.includes('B Day'))) {
                 relevantDays.push({
-                    date: eventDate,
-                    dayOfWeek: getDayOfWeek(eventDate),
+                    date: eventDateStr,
+                    dayOfWeek: getDayOfWeek(eventDateStr),
                     type: event.summary.includes('A Day') ? 'A Day' : 'B Day'
                 });
             }
