@@ -1,23 +1,16 @@
 {
   "name": "hsmse-is-it-a-day-or-b-day",
   "version": "1.0.0",
-  "description": "gets whether it is A day or B day from an exported ICS file from the google calendar on the school website",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/a-pinch-ofsalt/hsmse-is-it-a-day-or-b-day.git"
-  },
-  "author": "Franklin Hiciano",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/a-pinch-ofsalt/hsmse-is-it-a-day-or-b-day/issues"
-  },
-  "homepage": "https://github.com/a-pinch-ofsalt/hsmse-is-it-a-day-or-b-day#readme",
+  "description": "",
   "dependencies": {
-    "ical": "^0.8.0",
-    "ics": "^3.7.6"
+    "express": "^4.19.2",
+    "ical": "^0.8.0"
   }
 }
