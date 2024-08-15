@@ -25,11 +25,13 @@ jobs:
 
     - name: Run update script
       run: node update-json.js
-
+    
+    - name: Force add JSON file
+      run: git add -f public/nextFiveDays.json
+    
     - name: Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add public/nextFiveDays.json
         git commit -m "Update JSON file"
         git push origin main
