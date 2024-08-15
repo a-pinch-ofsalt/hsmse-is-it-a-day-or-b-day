@@ -8,40 +8,40 @@ const icsFileContent = fs.readFileSync(icsFilePath, 'utf-8');
 // Parse the .ics file
 const events = ical.parseICS(icsFileContent);
 
-// Function to add days to a date and skip weekends
-function addWeekdays(startDate, days) {
-    let date = new Date(startDate);
-    while (days > 0) {
-        date.setDate(date.getDate() + 1);
-        // Skip Saturday and Sunday
-        if (date.getDay() !== 0 && date.getDay() !== 6) {
-            days--;
-        }
-    }
-    return date.toISOString().split('T')[0];
-}
-
-// Function to check if a specific date is a B day
-function isBdayOnDate(checkDate) {
+// Function to find the next five A or B days from today
+function findNextFiveDays() {
+    let relevantDays = [];
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    
+    // Iterate through all events
     for (const eventKey in events) {
         const event = events[eventKey];
-        if (event.start && event.start.toISOString().split('T')[0] === checkDate) {
-            if (event.summary.includes('B Day')) {
-                return true;
-            } else if (event.summary.includes('A Day')) {
-                return false;
+        if (event.start) {
+            const eventDate = event.start.toISOString().split('T')[0];
+            
+            // Check if the event is in the future and is an A Day or B Day
+            if (eventDate >= today && (event.summary.includes('A Day') || event.summary.includes('B Day'))) {
+                relevantDays.push({
+                    date: eventDate,
+                    type: event.summary.includes('A Day') ? 'A Day' : 'B Day'
+                });
             }
         }
+        
+        // Stop once we've collected five future relevant days
+        if (relevantDays.length >= 5) {
+            break;
+        }
     }
-    return null; // No relevant event found for this date
+    
+    return relevantDays;
 }
 
-// Get today's date
-const today = new Date('2024-09-06');
+// Find the next five A or B days
+const nextFiveDays = findNextFiveDays();
 
-// Check the next five school days
-for (let i = 1; i <= 5; i++) {
-    const nextDate = addWeekdays(today, i);
-    const isBday = isBdayOnDate(nextDate);
-    console.log(`Is it a B Day on ${nextDate}? ${isBday !== null ? (isBday ? 'Yes' : 'No') : 'No relevant event found'}`);
-}
+// Output the results
+console.log('Next 5 A or B Days:');
+nextFiveDays.forEach(day => {
+    console.log(`${day.date}: ${day.type}`);
+});
