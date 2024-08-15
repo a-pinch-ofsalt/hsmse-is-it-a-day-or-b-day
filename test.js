@@ -8,9 +8,16 @@ const icsFileContent = fs.readFileSync(icsFilePath, 'utf-8');
 // Parse the .ics file
 const events = ical.parseICS(icsFileContent);
 
+// Function to get the day of the week for a given date
+function getDayOfWeek(dateStr) {
+    const date = new Date(dateStr);
+    const options = { weekday: 'long' };
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+}
+
 // Function to find the next five A or B days from today
 function findNextFiveDays() {
-    let relevantDays = [];
+    const relevantDays = [];
     const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
     
     // Iterate through all events
@@ -23,6 +30,7 @@ function findNextFiveDays() {
             if (eventDate >= today && (event.summary.includes('A Day') || event.summary.includes('B Day'))) {
                 relevantDays.push({
                     date: eventDate,
+                    dayOfWeek: getDayOfWeek(eventDate),
                     type: event.summary.includes('A Day') ? 'A Day' : 'B Day'
                 });
             }
@@ -43,5 +51,5 @@ const nextFiveDays = findNextFiveDays();
 // Output the results
 console.log('Next 5 A or B Days:');
 nextFiveDays.forEach(day => {
-    console.log(`${day.date}: ${day.type}`);
+    console.log(`${day.date} (${day.dayOfWeek}): ${day.type}`);
 });
