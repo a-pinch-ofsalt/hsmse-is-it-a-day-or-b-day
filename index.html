@@ -1,52 +1,71 @@
 <!DOCTYPE HTML>
-<!--
-	Spectral by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
+
 <html>
-	<head>
-		<title>Spectral by HTML5 UP</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
-	<body class="landing is-preload">
 
-		<!-- Page Wrapper -->
-			<div id="page-wrapper">
+<head>
+	<title>Spectral by HTML5 UP</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+	<link rel="stylesheet" href="style.css";
+</head>
 
-				<!-- Main Info -->
-					<section id="banner">
-						<div class="inner">
-							<h2></h2>
-							<p></p>
-						</div>
-						<a href="#calendar-section" class="more scrolly">View Calendar</a>
-					</section>
+<body class="landing is-preload">
 
-				
-				<!-- Calendar -->
-					<section id="calendar-section" class="wrapper style3 special">
-						<div class="inner">
-							<header class="major">
-								<h2>Accumsan mus tortor nunc aliquet</h2>
-								<p>Aliquam ut ex ut augue consectetur interdum. Donec amet imperdiet eleifend<br />
-								fringilla tincidunt. Nullam dui leo Aenean mi ligula, rhoncus ullamcorper.</p>
-							</header>
-						</div>
-					</section>
+	<!-- Page Wrapper -->
+	<div id="page-wrapper">
+
+		<!-- Main Info -->
+		<section id="banner">
+			<ul class="days">
+				<li>
+					<div class="day one">
+						<h2></h2>
+						<p></p>
+					</div>
+				</li>
+				<li>
+					<div class="day two">
+						<h2></h2>
+						<p></p>
+					</div>
+				</li>
+			</ul>
+
+			<a href="#calendar-section" class="more scrolly">View Calendar</a>
+		</section>
+
+
+		<!-- Calendar -->
+		<section id="calendar-section" class="wrapper style3 special">
+			<div class="inner">
+				<header class="major">
+					<h2>HSMSE Calendar</h2>
+					<div>
+						<iframe
+						id="calendar"
+						src="https://calendar.google.com/calendar/embed?src=publiccalendar%40hsmse.org&ctz=America%2FNew_York"
+						style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+					</div>
+					
+				</header>
 			</div>
+		</section>
+	</div>
 
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.scrollex.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+	<!-- Scripts -->
+	<script src="update-display.js"></script>
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
 
-	</body>
+</body>
+
 </html>

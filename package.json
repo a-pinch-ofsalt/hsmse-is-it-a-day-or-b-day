@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/a-pinch-ofsalt/hsmse-is-it-a-day-or-b-day#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "axios": "^1.7.4",
+    "express": "^4.19.2",
+    "ical": "^0.8.0"
   }
 }

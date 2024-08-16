@@ -1,0 +1,14 @@
+ul {
+    list-style-type: none;
+}
+
+.days {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#calendar {
+    border-radius: 11px;
+    width: 100%;
+}
