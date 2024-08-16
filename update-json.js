@@ -52,6 +52,6 @@ function findNextFiveDays() {
 const nextFiveDays = findNextFiveDays();
 
 // Save the processed data to a JSON file
-const outputPath = path.join(__dirname, 'public/nextFiveDays.json');
+const outputPath = path.join(__dirname, 'nextFiveDays.json');
 fs.writeFileSync(outputPath, JSON.stringify(nextFiveDays, null, 2), 'utf-8');
 console.log('Data has been processed and saved to nextFiveDays.json');
