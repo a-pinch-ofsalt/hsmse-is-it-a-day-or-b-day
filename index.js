@@ -4,7 +4,7 @@ const tomorrowColor = '#33FF57';
 const otherDayColor = '#424242';
 const highlightColor = '#ede8ad'; // Yellow color for highlighting
 
-fetch('./nextFiveDays.json')
+fetch('https://a-pinch-ofsalt.github.io/hsmse-is-it-a-day-or-b-day/nextFiveDays.json')
     .then(response => response.json())
     .then(nextFiveDays => {
         const today = new Date();
