@@ -6,7 +6,7 @@ fetch('./next-days.json')
         const day2Title = document.querySelector('.two h2'); // Change this selector to match your HTML
         const day2Date = document.querySelector('.two p');
 
-        let today = new Date('2024-10-25');
+        let today = new Date();
         let tomorrow = new Date(today);
         tomorrow.setDate(today.getDate() + 1);
 

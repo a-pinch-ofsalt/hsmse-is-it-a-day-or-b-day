@@ -23,7 +23,7 @@ async function fetchAndParseICS(url) {
 }
 
 function findNextSchoolDays(events, numDays = 2) {
-    const today = new Date('2024-10-25');
+    const today = new Date();
     let schoolDays = [];
     const sDayRegex = /\bs day\b/i; // Regex to match exactly 's day'
 
