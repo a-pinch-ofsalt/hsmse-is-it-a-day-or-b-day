@@ -12,7 +12,7 @@ fetch('https://a-pinch-ofsalt.github.io/hsmse-is-it-a-day-or-b-day/nextFiveDays.
             const dateObj = new Date(day.date);
 
             // Format the date for display, ensuring no time zone shifts occur
-            const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' };
+            const options = { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' };
             const formattedDate = dateObj.toLocaleDateString('en-US', options);
 
             // Insert this formatted date into the DOM
@@ -35,6 +35,7 @@ fetch('https://a-pinch-ofsalt.github.io/hsmse-is-it-a-day-or-b-day/nextFiveDays.
             }
 
             headerElement.innerHTML = `${dayLabel}, ${formattedDate} is <span style="background-color: yellow;"><b>${day.type}</b></span>!`;
+            console.log(`dayLabel = ${dayLabel}, formattedDate = ${formattedDate}`);
             document.querySelector('.info').appendChild(headerElement);
         });
     })
