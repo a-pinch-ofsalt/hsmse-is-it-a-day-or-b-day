@@ -35,7 +35,7 @@ fetch('https://a-pinch-ofsalt.github.io/hsmse-is-it-a-day-or-b-day/nextFiveDays.
             }
 
             headerElement.innerHTML = `${dayLabel}, ${formattedDate} is <span style="background-color: yellow;"><b>${day.type}</b></span>!`;
-            document.body.appendChild(headerElement);
+            document.querySelector('.info').appendChild(headerElement);
         });
     })
     .catch(error => console.error('Error loading the data:', error));
