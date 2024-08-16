@@ -1,57 +1,74 @@
-const fs = require('fs');
+const express = require('express');
 const ical = require('ical');
+const axios = require('axios');
+const fs = require('fs');
 const path = require('path');
 
-// Function to get the day of the week for a given date
-function getDayOfWeek(dateStr) {
-    const date = new Date(dateStr);
-    const options = { weekday: 'long', timeZone: 'UTC' };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Google Calendar ICS URL
+const icsUrl = 'https://calendar.google.com/calendar/ical/publiccalendar%40hsmse.org/public/basic.ics';
+
+// Fetch and parse the ICS file
+async function fetchAndParseICS(url) {
+    try {
+        const response = await axios.get(url);
+        const calendarData = response.data;
+        return ical.parseICS(calendarData);
+    } catch (error) {
+        console.error('Error fetching the ICS file:', error);
+        return null;
+    }
 }
 
-// Function to find the next five A or B days from today
-function findNextFiveDays() {
-    const icsFilePath = path.join(__dirname, './ics/hsmse-calendar.ics');
-    const icsFileContent = fs.readFileSync(icsFilePath, 'utf-8');
-    const events = ical.parseICS(icsFileContent);
+function findNextSchoolDays(events, numDays = 2) {
+    const today = new Date('2024-10-25');
+    let schoolDays = [];
+    const sDayRegex = /\bs day\b/i; // Regex to match exactly 's day'
 
-    const relevantDays = [];
-    const today = new Date();
-    today.setUTCHours(0, 0, 0, 0); // Reset time to midnight in UTC
-    const todayStr = today.toISOString().split('T')[0];
+    for (let event of Object.values(events)) {
+        if (event.type === 'VEVENT' && event.start >= today) {
+            const summary = event.summary.toLowerCase();
+            const startDate = new Date(event.start);
+            
+            console.log(`Event Date: ${startDate}, Summary: ${summary}`);  // Log the event date and summary
 
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            if (sDayRegex.test(summary) || summary.includes('a day') || summary.includes('b day') || summary.includes('c-day')) { // Use regex to match 's day'
+                schoolDays.push({ date: startDate, summary: event.summary });
 
-    for (const eventKey in events) {
-        const event = events[eventKey];
-        if (event.start) {
-            const eventDate = new Date(event.start);
-            eventDate.setUTCHours(0, 0, 0, 0); // Reset time to midnight in UTC
-            const eventDateStr = eventDate.toISOString().split('T')[0];
-
-            if (eventDateStr >= todayStr && (event.summary.includes('A Day') || event.summary.includes('B Day'))) {
-                relevantDays.push({
-                    date: eventDateStr,
-                    dayOfWeek: getDayOfWeek(eventDateStr),
-                    type: event.summary.includes('A Day') ? 'A Day' : 'B Day',
-                });
+                if (schoolDays.length === numDays) {
+                    break;
+                }
             }
-        }
-
-        if (relevantDays.length >= 5) {
-            break;
         }
     }
 
-    return relevantDays;
+    return schoolDays;
 }
 
-// Find the next five A or B days
-const nextFiveDays = findNextFiveDays();
+// Save the JSON to a file
+async function updateJsonFile() {
+    const events = await fetchAndParseICS(icsUrl);
+    if (events) {
+        const nextDays = findNextSchoolDays(events, 2);
+        const filePath = path.join(__dirname, 'next-days.json');
+        fs.writeFileSync(filePath, JSON.stringify(nextDays, null, 2));
+        console.log('JSON file has been updated:', filePath);
+    } else {
+        console.error('Failed to update the JSON file.');
+    }
+}
 
-// Save the processed data to a JSON file
-const outputPath = path.join(__dirname, 'nextFiveDays.json');
-fs.writeFileSync(outputPath, JSON.stringify(nextFiveDays, null, 2), 'utf-8');
-console.log('Data has been processed and saved to nextFiveDays.json');
+// Set up a route for testing the update
+app.get('/update-json', async (req, res) => {
+    await updateJsonFile();
+    res.send('JSON file updated!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+// Call the function to update the JSON file on script execution
+updateJsonFile();
