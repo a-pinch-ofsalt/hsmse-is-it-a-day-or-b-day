@@ -7,39 +7,35 @@ const highlightColor = '#ede8ad'; // Yellow color for highlighting
 fetch('https://a-pinch-ofsalt.github.io/hsmse-is-it-a-day-or-b-day/nextFiveDays.json')
     .then(response => response.json())
     .then(nextFiveDays => {
-        const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
-        const tomorrow = new Date(today);
-        tomorrow.setDate(today.getDate() + 1);
-        const tomorrowStr = tomorrow.toISOString().split('T')[0];
-
         nextFiveDays.forEach(day => {
+            // Create a Date object from the string (assuming ISO format in JSON)
+            const dateObj = new Date(day.date);
+
+            // Format the date for display, ensuring no time zone shifts occur
+            const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' };
+            const formattedDate = dateObj.toLocaleDateString('en-US', options);
+
+            // Insert this formatted date into the DOM
             let dayLabel;
             let headerElement;
-            let dateObj = new Date(day.date);
-            let options = { month: 'long', day: 'numeric', year: 'numeric' };
-            let formattedDate = dateObj.toLocaleDateString('en-US', options);
 
-            // Determine the correct article and highlight the type of day
-            let dayType = day.type === 'A Day' ? `an <span style="background-color: ${highlightColor};"><b>A Day</b></span>` : `a <span style="background-color: ${highlightColor};"><b>B Day</b></span>`;
-
-            // Create header element
-            if (day.date === todayStr) {
+            // Determine the label (today, tomorrow, etc.)
+            if (dateObj.toDateString() === new Date().toDateString()) {
                 dayLabel = 'Today';
-                headerElement = document.createElement('h1');
-                headerElement.style.color = todayColor;
-            } else if (day.date === tomorrowStr) {
+                headerElement = document.createElement('h2');
+                headerElement.style.color = '#FF5733';  // Example color for "Today"
+            } else if (dateObj.toDateString() === new Date(Date.now() + 86400000).toDateString()) {
                 dayLabel = 'Tomorrow';
                 headerElement = document.createElement('h1');
-                headerElement.style.color = tomorrowColor;
+                headerElement.style.color = '#33FF57';  // Example color for "Tomorrow"
             } else {
                 dayLabel = day.dayOfWeek;
                 headerElement = document.createElement('h3');
-                headerElement.style.color = otherDayColor;
+                headerElement.style.color = '#424242';  // Example color for other days
             }
 
-            headerElement.innerHTML = `${dayLabel}, ${formattedDate} is ${dayType}!`;
-            document.querySelector('.info').appendChild(headerElement);
+            headerElement.innerHTML = `${dayLabel}, ${formattedDate} is <span style="background-color: yellow;"><b>${day.type}</b></span>!`;
+            document.body.appendChild(headerElement);
         });
     })
     .catch(error => console.error('Error loading the data:', error));
