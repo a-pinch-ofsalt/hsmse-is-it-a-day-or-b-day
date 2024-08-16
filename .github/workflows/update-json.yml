@@ -26,12 +26,22 @@ jobs:
     - name: Run update script
       run: node update-json.js
 
-    - name: Force add JSON file
-      run: git add -f public/nextFiveDays.json
+    - name: Check for changes
+      id: changes
+      run: |
+        if git diff --quiet; then
+          echo "No changes detected"
+          echo "::set-output name=changes_detected::false"
+        else
+          echo "Changes detected"
+          echo "::set-output name=changes_detected::true"
+        fi
 
-    - name: Commit and push changes
+    - name: Commit and push changes if any
+      if: steps.changes.outputs.changes_detected == 'true'
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git add public/nextFiveDays.json
         git commit -m "Update JSON file"
         git push origin main
